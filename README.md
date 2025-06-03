@@ -11,6 +11,12 @@
 +npx tsc --init
 ```
 
+- 하나의 스크립트로 묶기
+
+```json
+"dev": "tsc -w & npx serve ."
+```
+
 ## Our First JSX
 
 - React 를 만들어줌
