@@ -1,14 +1,14 @@
 # my-react
 
-> Make my own React library
+> Let’s build a React from scratch
 
-- typescript 가 아닌 tsc 사용 해야함
+# Part 1 — VirtualDOM and Renderer
+
+- 개정: typescript 가 아닌 tsc 사용 해야함
 
 ```sh
 npx tsc --init
 ```
-
-# D1
 
 ## Our First JSX
 
@@ -47,3 +47,9 @@ const App = (
 3. children 존재하는 경우 1~2 를 반복하여 현재 DOM 하위로 append
 4. container.appendChild(domEl) 으로 브라우저 container 에 추가
 5. Text node 의 경우 별도 처리 필요
+
+## Lessons Learned
+
+- 리액트 처음 배울때는 초고수들만 직접 만들기 하는줄 알아서 겁먹었는데 생각 보다 간단하다.
+- 사실 JSX 가 너무 많은걸 해주는 것 같다. JSX 직접 만들기도 도전?
+- virtual DOM 의 한계에 대한 글들이 요즘 많이 보이는데, signal 기반도 직접 만들기 해보면 좋을 것 같다

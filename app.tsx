@@ -45,9 +45,10 @@ const render = (el, container) => {
 };
 // ---- Application ---
 const App = () => {
+  const myName = "henry";
   return (
     <div draggable>
-      <h2>Hello React!</h2>
+      <h2>Hello {myName}!</h2>
       <p>I am a pargraph</p>
       <input type="text" />
     </div>
