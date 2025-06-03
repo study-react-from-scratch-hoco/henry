@@ -32,3 +32,8 @@ const App = (
 ['input', {…}]
 ['div', {…}, undefined, undefined, undefined]
 ```
+
+## Introducing Virtual DOM
+
+- tree 의 복제본을 저장하기 위해 tag, props, children 을 분리해서 받음
+- tag 가 fuction 인 경우 직접 실행해서 el 반환
