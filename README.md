@@ -37,3 +37,13 @@ const App = (
 
 - tree 의 복제본을 저장하기 위해 tag, props, children 을 분리해서 받음
 - tag 가 fuction 인 경우 직접 실행해서 el 반환
+
+## Let’s Render our VirtualDOM (renderer)
+
+- <div id="myapp"></div> 을 virtual DOM 의 root node 로 잡고 실제 DOM 을 렌더링한다
+
+1. 해당 type의 실제 DOM node 생성
+2. props 복제
+3. children 존재하는 경우 1~2 를 반복하여 현재 DOM 하위로 append
+4. container.appendChild(domEl) 으로 브라우저 container 에 추가
+5. Text node 의 경우 별도 처리 필요
