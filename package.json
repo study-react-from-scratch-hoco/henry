@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "dev": "tsc --w & npx serve ."
+  },
   "devDependencies": {
     "typescript": "^5.8.3"
   }
