@@ -47,7 +47,7 @@ const App = (
 
 ## Let’s Render our VirtualDOM (renderer)
 
-- <div id="myapp"></div> 을 virtual DOM 의 root node 로 잡고 실제 DOM 을 렌더링한다
+- `<div id="myapp"></div>` 을 virtual DOM 의 root node 로 잡고 실제 DOM 을 렌더링한다
 
 1. 해당 type의 실제 DOM node 생성
 2. props 복제
