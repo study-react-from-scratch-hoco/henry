@@ -6,8 +6,9 @@
 
 - 개정: typescript 가 아닌 tsc 사용 해야함
 
-```sh
-npx tsc --init
+```diff
+-npx typescript --init
++npx tsc --init
 ```
 
 ## Our First JSX
