@@ -43,14 +43,29 @@ const render = (el, container) => {
   // 4. append the DOM node to the container.
   container.appendChild(domEl);
 };
+const useState = (initialState) => {
+  console.log("useState is initialized with value:", initialState);
+  let state = initialState; // is it CoW?
+  const setState = (newState) => {
+    console.log("setState is called with newState value: ", newState);
+    state = newState;
+  };
+
+  return [state, setState];
+};
+
 // ---- Application ---
 const App = () => {
-  const myName = "henry";
+  const [name, setName] = useState("henry");
   return (
     <div draggable>
-      <h2>Hello {myName}!</h2>
+      <h2>Hello {name}!</h2>
       <p>I am a pargraph</p>
-      <input type="text" />
+      <input
+        type="text"
+        value={name}
+        onchange={(e) => setName(e.target.value)}
+      />
     </div>
   );
 };

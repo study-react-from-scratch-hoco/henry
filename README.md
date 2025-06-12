@@ -2,6 +2,11 @@
 
 > Let’s build a React from scratch
 
+- [1장 VirtualDOM & Renderer](https://geekpaul.medium.com/lets-build-a-react-from-scratch-part-1-virtualdom-and-renderer-14f4f716de62)
+- [2장 State Management & Hooks](https://geekpaul.medium.com/lets-build-a-react-from-scratch-part-2-state-management-and-react-hooks-e771c5c06066)
+- [3장 React Suspence & Concurrent Mode](https://geekpaul.medium.com/lets-build-a-react-from-scratch-part-3-react-suspense-and-concurrent-mode-5da8c12aed3f)
+- [4장 Server Side Rendering](https://geekpaul.medium.com/lets-build-a-react-from-scratch-part-4-server-side-rendering-and-its-challenges-b7b87c84bbf)
+
 # Part 1 — VirtualDOM and Renderer
 
 - 개정: typescript 가 아닌 tsc 사용 해야함
@@ -60,3 +65,21 @@ const App = (
 - 리액트 처음 배울때는 초고수들만 직접 만들기 하는줄 알아서 겁먹었는데 생각 보다 간단하다.
 - 사실 JSX 가 너무 많은걸 해주는 것 같다. JSX 직접 만들기도 도전?
 - virtual DOM 의 한계에 대한 글들이 요즘 많이 보이는데, signal 기반도 직접 만들기 해보면 좋을 것 같다
+
+# Part 2 — State Management and React Hooks
+
+## 🤹 Introduction to React Hooks (useState)🎪
+
+- 초기값을 받아 state 와 setter 를 return
+
+```ts
+const useState = (initialState) => {
+  console.log("useState is initialized with value:", initialState);
+  let state = initialState;
+  const setState = (newState) => {
+    console.log("setState is called with newState value:", newState);
+    state = newState;
+  };
+  return [state, setState];
+};
+```
