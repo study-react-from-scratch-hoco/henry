@@ -49,9 +49,19 @@ const useState = (initialState) => {
   const setState = (newState) => {
     console.log("setState is called with newState value: ", newState);
     state = newState;
+    reRender();
   };
 
   return [state, setState];
+};
+
+const reRender = () => {
+  console.log("reRender-ing :)");
+  const rootNode = document.getElementById("myapp");
+  // reset/clean whatever is rendered already
+  rootNode.innerHTML = "";
+  // then render Fresh
+  render(<App />, rootNode);
 };
 
 // ---- Application ---

@@ -83,3 +83,24 @@ const useState = (initialState) => {
   return [state, setState];
 };
 ```
+
+## 🌗 Introducing Re-render for our App 🌝
+
+- 모든 것을 다시 다 reRender 하기
+  - onchange 마다 reRender 가 호출되고, useState 가 호출되면서 state 가 initialValue 로 reset 된다
+  - redering 중에 새 값을 잃는다
+  - 현재 render 함수는 append 만 수행
+
+### reRender 시에 rootNode.innerHTML 초기화
+
+```tsx
+// ---- Library --- //
+const reRender = () => {
+  console.log("reRender-ing :)");
+  const rootNode = document.getElementById("myapp");
+  // reset/clean whatever is rendered already
+  rootNode.innerHTML = "";
+  // then render Fresh
+  render(<App />, rootNode);
+};
+```
