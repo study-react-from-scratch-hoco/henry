@@ -104,3 +104,24 @@ const reRender = () => {
   render(<App />, rootNode);
 };
 ```
+
+## 🍔 State-fulness and Global State Management 🍟
+
+- state 를 useState 밖에 두고 변경되었는지 확인하자
+
+```tsx
+// ---- Library --- //
+let myAppState;
+const useState = (initialState) => {
+  // Check before setting AppState to initialState (reRender)
+  myAppState = myAppState || initialState;
+  console.log("useState is initialized with value:", myAppState);
+  const setState = (newState) => {
+    console.log("setState is called with newState value:", newState);
+    myAppState = newState;
+    // Render the UI fresh given state has changed.
+    reRender();
+  };
+  return [myAppState, setState];
+};
+```

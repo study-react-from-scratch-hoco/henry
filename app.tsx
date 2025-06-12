@@ -43,16 +43,19 @@ const render = (el, container) => {
   // 4. append the DOM node to the container.
   container.appendChild(domEl);
 };
+
+let myAppState;
 const useState = (initialState) => {
-  console.log("useState is initialized with value:", initialState);
-  let state = initialState; // is it CoW?
+  // Check before setting AppState to initialState (reRender)
+  myAppState = myAppState || initialState;
+  console.log("useState is initialized with value:", myAppState);
   const setState = (newState) => {
-    console.log("setState is called with newState value: ", newState);
-    state = newState;
+    console.log("setState is called with newState value:", newState);
+    myAppState = newState;
+    // Render the UI fresh given state has changed.
     reRender();
   };
-
-  return [state, setState];
+  return [myAppState, setState];
 };
 
 const reRender = () => {
