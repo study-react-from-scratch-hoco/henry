@@ -125,3 +125,54 @@ const useState = (initialState) => {
   return [myAppState, setState];
 };
 ```
+
+## 👨🏻‍🎤 Managing Multiple States with useState() 😵‍💫
+
+- library 의 저자로서 얼마나 많은 state 가 어디에 필요할 지 모른다
+- 서로 다른 state 간에 overwrite 되어서는 안된다
+
+- cursor 로 관리하는 globalArray 생성
+
+```diff
+// ---- Library --- //
++const myAppState = [];
++let myAppStateCursor = 0;
+
+const useState = (initialState) => {
+  // get the cursor for this useState
++ const stateCursor = myAppStateCursor;
+  // Check before setting AppState to initialState (reRender)
++ myAppState[stateCursor] = myAppState[stateCursor] || initialState;
+  console.log(
++   `useState is initialized at cursor ${stateCursor} with value:`,
+    myAppState,
+  );
+  const setState = (newState) => {
+    console.log(
++     `setState is called at cursor ${stateCursor} with newState value:`,
+      newState,
+    );
++   myAppState[stateCursor] = newState;
+    // Render the UI fresh given state has changed.
+    reRender();
+  };
++ // prepare the cursor for the next state.
++ myAppStateCursor++;
++ console.log(`stateDump`, myAppState);
++ return [myAppState[stateCursor], setState];
+};
+```
+
+- reRender 시에 myAppStateCursor 를 초기화
+
+```diff
+// ---- Library --- //
+const reRender = () => {
+  // ..
+  rootNode.innerHTML = '';
++ // Reset the global state cursor
++ myAppStateCursor = 0;
+  // then render Fresh
+  render(<App />, rootNode);
+};
+```

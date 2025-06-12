@@ -44,18 +44,30 @@ const render = (el, container) => {
   container.appendChild(domEl);
 };
 
-let myAppState;
+const myAppState = [];
+let myAppStateCursor = 0;
 const useState = (initialState) => {
+  // get the cursor for this useState
+  const stateCursor = myAppStateCursor;
   // Check before setting AppState to initialState (reRender)
-  myAppState = myAppState || initialState;
-  console.log("useState is initialized with value:", myAppState);
+  myAppState[stateCursor] = myAppState[stateCursor] || initialState;
+  console.log(
+    `useState is initialized at cursor ${stateCursor} with value:`,
+    myAppState,
+  );
   const setState = (newState) => {
-    console.log("setState is called with newState value:", newState);
-    myAppState = newState;
+    console.log(
+      `setState is called at cursor ${stateCursor} with newState value:`,
+      newState,
+    );
+    myAppState[stateCursor] = newState;
     // Render the UI fresh given state has changed.
     reRender();
   };
-  return [myAppState, setState];
+  // prepare the cursor for the next state.
+  myAppStateCursor++;
+  console.log(`stateDump`, myAppState);
+  return [myAppState[stateCursor], setState];
 };
 
 const reRender = () => {
@@ -63,13 +75,17 @@ const reRender = () => {
   const rootNode = document.getElementById("myapp");
   // reset/clean whatever is rendered already
   rootNode.innerHTML = "";
+  // Reset the global state cursor
+  myAppStateCursor = 0;
   // then render Fresh
   render(<App />, rootNode);
 };
 
 // ---- Application ---
 const App = () => {
-  const [name, setName] = useState("henry");
+  const [name, setName] = useState("Arindam");
+  const [count, setCount] = useState(0);
+  console.log("cccc", count);
   return (
     <div draggable>
       <h2>Hello {name}!</h2>
@@ -79,6 +95,9 @@ const App = () => {
         value={name}
         onchange={(e) => setName(e.target.value)}
       />
+      <h2> Counter value: {count + ""}</h2>
+      <button onclick={() => setCount(count + 1)}>+1</button>
+      <button onclick={() => setCount(count - 1)}>-1</button>
     </div>
   );
 };
