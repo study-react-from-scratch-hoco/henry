@@ -176,3 +176,20 @@ const reRender = () => {
   render(<App />, rootNode);
 };
 ```
+
+## ✌🏽 Why the rules of React 🤞🏽
+
+### Only Call Hooks at the Top Level
+
+- state 관리를 위한 global array 존재
+- 조건절이나 반복문 안에서 조건적으로 useState 와 같은 hook 이 호출된다면 cursor 추적하기가 어렵다
+
+## Lessons Learned
+
+- state 구현이 생각보다 쉬워서 놀랐다.
+- diffing 처리는 별도로 안하는건지 여기서만 단순화 시킨 건지 궁금하다.
+- multi state 처리할 때 꼭 cursor 를 별도로 둬야하나? map에대한 key 로 처리할 수는 없는지? 궁금하다
+
+## Question
+
+- 왜 input 의 onchange 를 정의 했는데도 우리가 흔히 하는 onChange 처럼 동작하지 않고 input 밖으로 포커스를 옮겨야만 반영되는것일까?
