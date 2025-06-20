@@ -193,3 +193,84 @@ const reRender = () => {
 ## Question
 
 - 왜 input 의 onchange 를 정의 했는데도 우리가 흔히 하는 onChange 처럼 동작하지 않고 input 밖으로 포커스를 옮겨야만 반영되는것일까?
+
+# Part 3 — React Suspense and Concurrent Mode
+
+- React Suspense and Concurrent Mode
+
+## 🦁 React Rendering Techniques 🐒
+
+### Approach 1: Fetch-on-Render (not using Suspense)
+
+- traditional way: fetching after the initial render
+- state 와 같은 방식으로 채움
+
+```jsx
+function ProfilePage() {
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    fetchUser().then((u) => setUser(u));
+  }, []);
+  if (user === null) {
+    return <p>Loading profile...</p>;
+  }
+  return (
+    <>
+      <h1>{user.name}</h1>
+      <ProfileTimeline />
+    </>
+  );
+}
+```
+
+- waterfall 단점: 의존된 데이터가 fetch 될 때마다 re-render 된다
+
+### Approach 2: Fetch-Then-Render (not using Suspense)
+
+- 컴포넌트에 대한 정보를 전용 function call 로 분리한다
+- render 를 trigger 하기 위해서 setState 는 여전히 사용
+
+```jsx
+// Wrapping all data fetching
+function fetchProfileData() {
+  return Promise.all([fetchUser(), fetchPosts()]).then(([user, posts]) => {
+    return { user, posts };
+  });
+}
+// Using it in our Component
+function ProfilePage() {
+  const [user, setUser] = useState(null);
+  const [posts, setPosts] = useState(null);
+  useEffect(() => {
+    promise.then((data) => {
+      setUser(data.user);
+      setPosts(data.posts);
+    });
+  }, []);
+  if (user === null) {
+    return <p>Loading profile...</p>;
+  }
+  return (
+    <>
+      <h1>{user.name}</h1>
+      <ProfileTimeline posts={posts} />
+    </>
+  );
+}
+```
+
+1. Start fetching
+2. Finish fetching
+3. Start rendering
+
+- fetchProfileData 를 사용을 안하는데?
+
+### Approach 3: Render-as-You-Fetch (using Suspense)
+
+1. Start fetching
+2. Start rendering
+3. Finish fetching
+
+- fetching 최적화 고려할 필요가 없다
+  - fetching 완료되면 한번만 렌더링 하면 된다
+- image, 다른페이지, 문서 등을 non-blocking 으로 가져올 수 있다
