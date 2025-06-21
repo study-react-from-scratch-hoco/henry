@@ -311,3 +311,80 @@ return (
       <img src={photo} alt="Photo" />
 // ..
 ```
+
+## 🌳 Suspense and Caching mechanisms with 🌴 createResource
+
+- createResource() 가 async call 을 추적
+
+```jsx
+// ---- Library ---- //
+const resourceCache = {};
+const createResource = (asyncTask, key) => {
+  // First check if the key is present in the cache.
+  // if so simply return the cached value.
+  if (resourceCache[key]) return resourceCache[key];
+  // If not then we need handle the promise here
+  // ....
+};
+```
+
+- resourceCache 에 async task 보관
+- key 에 해당하는 resource 가 존재하면 해당 task 가 끝났다는 의미
+- key 없으면? 아직 resolved 되지 않았으므로 렌더링 하면 안됨
+
+## 💫 Branching our VirtualDOM creation 🐲
+
+```diff
+// ---- Library ---- //
+const resourceCache = {};
+const createResource = (asyncTask, key) => {
+  // First check if the key is present in the cache.
+  // if so simply return the cached value.
+  if (resourceCache[key]) return resourceCache[key];
+  // If not
++ throw { promise: asyncTask(), key };
+};
+```
+
+- key 없으면 바로 throw 해버린다 -> virtual DOM tree 생성 중단
+
+```jsx
+// ---- Application --- //
+const App = () => {
+//..
+  const photo = createResource(getMyAwesomePic, 'photo');
+return (
+//..
+```
+
+- 현재는 Uncaught error 나는게 정상
+
+```tsx
+// ---- Library --- //
+const React = {
+  createElement: (tag, props, ...children) => {
+    if (typeof tag === "function") {
+      try {
+        return tag(props, ...children);
+      } catch ({ promise, key }) {
+        console.log(promise);
+        console.log(key);
+      }
+    }
+    //..
+  },
+};
+```
+
+- catch 는 되었지만 여전히 Promise 어떻게 처리할 지 모름
+- h2 로 간단한 fallback UI 를 만들어보자
+
+```jsx
+// ---- Library --- //
+  createElement: (tag, props, ...children) => {
+    //..
+      } catch ({ promise, key }) {
+        // We branch off the VirtualDOM here
+        // now this will be immediately be rendered.
+        return { tag: 'h2', props: null, children: ['loading your image'] };
+```

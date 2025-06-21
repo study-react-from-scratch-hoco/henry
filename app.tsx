@@ -1,10 +1,25 @@
 // This will our main app file.
 //
 // ---- Library ---
+const resourceCache = {};
+const createResource = (asyncTask, key) => {
+  // First check if the key is present in the cache.
+  // if so simply return the cached value.
+  if (resourceCache[key]) return resourceCache[key];
+  // If not
+  throw { promise: asyncTask(), key };
+};
+
 const React = {
   createElement: (tag, props, ...children) => {
     if (typeof tag === "function") {
-      return tag(props, ...children);
+      try {
+        return tag(props, ...children);
+      } catch ({ promise, key }) {
+        // We branch off the VirtualDOM here
+        // now this will be immediately be rendered.
+        return { tag: "h2", props: null, children: ["loading your image"] };
+      }
     }
     const el = {
       tag,
@@ -93,7 +108,7 @@ const getMyAwesomePic = () => {
 const App = () => {
   const [name, setName] = useState("Arindam");
   const [count, setCount] = useState(0);
-  const photo = getMyAwesomePic();
+  const photo = createResource(getMyAwesomePic, "photo");
   return (
     <div draggable>
       <h2>Hello {name}!</h2>
