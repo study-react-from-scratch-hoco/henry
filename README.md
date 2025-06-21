@@ -287,7 +287,7 @@ function ProfilePage() {
 
 - 항상 부모-자식 구모가 아닌 경우를 처리하기 위해 try-catch block 의 컨셉을 차용하여 아직 로딩중인 VirtualDOM tree 정보를 전송
 
-> Concurrent React 는 중단 가능한 redering 이다
+> Concurrent React 는 중단 가능한 rendering 이다
 
 ## 🦈 Our own little remote API 🐋
 
@@ -388,3 +388,43 @@ const React = {
         // now this will be immediately be rendered.
         return { tag: 'h2', props: null, children: ['loading your image'] };
 ```
+
+## ☃️ Suspense in Action 💨
+
+- promise 가 throw 된 경우 resourceCache 에 담아 추적
+- 다음 번 loop 에서 resolved 되었다면 rerender 시에 반영됨
+
+```tsx
+// ---- Library --- //
+  createElement: (tag, props, ...children) => {
+        //..
+      } catch ({ promise, key }) {
+        // Handle when this promise is resolved/rejected.
+        promise.then((value) => {
+          resourceCache[key] = value;
+          reRender();
+        });
+        //..
+```
+
+## 🥝 Conclusion 🥥
+
+- 과제: 현재 구현으로는 resource 가 2 개 이상일 때 모든 resource 가 resolved 되어야 rendering 이 될 텐데 어떻게 병렬 처리를 할 것인가?
+
+## Lessons Learned
+
+- Concurrent React 는 중단 가능한 rendering 이다
+  - try/catch 를 이런식으로 활용 할 줄은 몰랐는데.. 이건 업무로직에서도 활용 해볼 수 있을 것 같다
+- Suspense 는 async call 을 처리하기 위한 메커니즘이다
+  - 그냥 성능을 위한 부가 기능으로만 생각했던 Suspense 의 동작 방식을 살펴볼 수 있어 좋았다
+- 단순한 구조의 resourceCache 만으로 Promise 를 추적할 수 있는게 흥미로웠지만,
+  - 실제로는 더 복잡한 구조가 필요할 것 같다. eg) resource 가 실패했을 때 재시도 하는 로직
+
+## Question
+
+- [fetchProfileData](#approach-2-fetch-then-render-not-using-suspense) 예제는 오타인거 겠지?
+- Cache 관련 고민해보아야 할 것들
+  - Cache invalidation은 어떻게 처리하나요?
+  - Memory leak 방지를 위한 cleanup 전략은?
+- Concurrent Mode가 Fiber 아키텍처와 어떤 관련이 있나요?
+- SWR 은 데이터의 관점에서, Suspense 는 렌더링 관점에서 비동기 처리를 한거거라고 보면 될까?

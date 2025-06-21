@@ -16,6 +16,11 @@ const React = {
       try {
         return tag(props, ...children);
       } catch ({ promise, key }) {
+        // Handle when this promise is resolved/rejected.
+        promise.then((value) => {
+          resourceCache[key] = value;
+          reRender();
+        });
         // We branch off the VirtualDOM here
         // now this will be immediately be rendered.
         return { tag: "h2", props: null, children: ["loading your image"] };
