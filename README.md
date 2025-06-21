@@ -274,3 +274,17 @@ function ProfilePage() {
 - fetching 최적화 고려할 필요가 없다
   - fetching 완료되면 한번만 렌더링 하면 된다
 - image, 다른페이지, 문서 등을 non-blocking 으로 가져올 수 있다
+
+## 🦖 How does React Suspense Work? 🦇
+
+- : React render cycle 에서 async call 을 처리하기 위한 메커니즘
+- React 의 rendering 은 원래는 synchrounous
+- renderer 는 VirtualDOM 에만 적용
+- DOM 의 어떤 부분에 signal 을 주고 기다려야하는지 구분 필요
+- 모든 promise 들을 추적해서 작업이 끝나면 자동으로 rendering 수행
+
+## 🐙 What is Concurrent Mode 🦑
+
+- 항상 부모-자식 구모가 아닌 경우를 처리하기 위해 try-catch block 의 컨셉을 차용하여 아직 로딩중인 VirtualDOM tree 정보를 전송
+
+> Concurrent React 는 중단 가능한 redering 이다
