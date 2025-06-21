@@ -81,11 +81,19 @@ const reRender = () => {
   render(<App />, rootNode);
 };
 
+// ---- Remote API ---- //
+const photoURL = "https://picsum.photos/200";
+const getMyAwesomePic = () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve(photoURL), 1500);
+  });
+};
+
 // ---- Application ---
 const App = () => {
   const [name, setName] = useState("Arindam");
   const [count, setCount] = useState(0);
-  console.log("cccc", count);
+  const photo = getMyAwesomePic();
   return (
     <div draggable>
       <h2>Hello {name}!</h2>
@@ -98,6 +106,7 @@ const App = () => {
       <h2> Counter value: {count + ""}</h2>
       <button onclick={() => setCount(count + 1)}>+1</button>
       <button onclick={() => setCount(count - 1)}>-1</button>
+      <img src={photo} alt="Photo" />
     </div>
   );
 };

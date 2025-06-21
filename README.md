@@ -288,3 +288,26 @@ function ProfilePage() {
 - 항상 부모-자식 구모가 아닌 경우를 처리하기 위해 try-catch block 의 컨셉을 차용하여 아직 로딩중인 VirtualDOM tree 정보를 전송
 
 > Concurrent React 는 중단 가능한 redering 이다
+
+## 🦈 Our own little remote API 🐋
+
+- simulate slow image fetching
+- 현재는 promise 처리를 못하기때문에 아래 코드가 에러 나는게 맞다
+
+```jsx
+// ---- Remote API ---- //
+const photoURL = 'https://picsum.photos/200';
+const getMyAwesomePic = () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve(photoURL), 1500);
+  });
+};
+//..
+const App = () => {
+//..
+  const photo = getMyAwesomePic();
+return (
+      <h2>Our Photo Album</h2>
+      <img src={photo} alt="Photo" />
+// ..
+```
